@@ -3,7 +3,6 @@ package Pspell;
 use strict;
 use warnings;
 use 5.010;
-use Term::ReadKey;
 use Scalar::Util qw(looks_like_number);
 
 require Exporter;
@@ -46,7 +45,7 @@ sub pspell_main {
 
 sub load_line {
     my ( $l, $ln ) = (@_);
-    my @line = split " ", $l;
+    my @line = split( " ", $l );
 
     for my $w (@line) {
         if ( not $w ) {
@@ -119,17 +118,6 @@ sub spell_check {
         }
         print "\'$search\' not found\n";
     }
-}
-
-sub get_key {
-    my $key;
-    ReadMode 4;
-    while ( not defined( $key = ReadKey(-1) ) ) {
-
-        # do nothing, wait for key press.
-    }
-    ReadMode 0;
-    $key;
 }
 
 sub parse_word {
