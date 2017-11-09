@@ -86,7 +86,7 @@ sub spell_check_interactive {
         $search = parse_word($search);
         next if ( not $search );
         my $found = 0;
-        if ( my @found = grep { $_ eq lc "$search" } @words ) {
+        if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
             $found = 1;
         }
 
@@ -103,11 +103,12 @@ sub spell_check_interactive {
 sub spell_check {
     my ( $search, $ln ) = (@_);
 
+    return if ( not $search );
     $search = parse_word($search);
     return if ( not $search );
 
     my $found = 0;
-    if ( my @found = grep { $_ eq lc "$search" } @words ) {
+    if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
         $found = 1;
     }
 
@@ -121,7 +122,6 @@ sub spell_check {
 }
 
 sub parse_word {
-
     # There are so many spelling conventions to consider.
 
     my $word = $_[0];
@@ -134,6 +134,11 @@ sub parse_word {
 
     # For now just get rid of all punctuation
     $word =~ s/(?!\')[[:punct:]]//g;
+
+    # Ignore possessive plural'
+    if ( substr( $word, -1 ) eq "'") {
+    	chop($word);
+    }
 
     $word;
 }
