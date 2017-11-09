@@ -42,10 +42,10 @@ It will take a lot of regex parsing and grepping to make this a usable command-l
 
 To install this module type the following:
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+	perl Makefile.PL
+	make
+	make test
+	make install
 
 ## COPYRIGHT AND LICENCE
 
