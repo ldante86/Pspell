@@ -49,7 +49,6 @@ sub load_line {
     my @line = split " ", $l;
 
     for my $w (@line) {
-        parse_word($w);
         if ( not $w ) {
             print "\n";
             return 0;
@@ -163,6 +162,7 @@ Pspell - A spell checker.
 
 	use Pspell;
 	pspell_main(@ARGV);
+
 
 If the argument is a file, the file will be processed.
 
