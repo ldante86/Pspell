@@ -129,15 +129,19 @@ sub parse_word {
     # Email address
     return 0 if ( $word =~ /^[^@]+@+[^\.]+\.+[^\.]{2,6}$/ );
 
-    # Just numbers
-    if ( looks_like_number($word) ) { return 0 }
+    # Ignore numbers
+    return 0 if ( looks_like_number($word) );
+
+    # Ignore hyphenated words.
+    return 0 if $word =~ '\b\w+(-\w+)+\b';
 
     # For now just get rid of all punctuation
-    $word =~ s/(?!\')[[:punct:]]//g;
+    return 0 if $word =~ s/(?!\')[[:punct:]]//g;
 
     # Ignore possessive plural'
     if ( substr( $word, -1 ) eq "'") {
     	chop($word);
+    	return 0;
     }
 
     $word;
