@@ -1,6 +1,6 @@
 # Pspell version 0.01
 
-##NAME
+## NAME
 
 **Pspell** - a rudimentary spell checker. Usable, but still in development.
 
@@ -37,6 +37,7 @@ So far, **Pspell** can only:
 * ignorantly ignores punctuation.
 
 It will take a lot of regex parsing and grepping to make this a usable command-line, script tool.
+
 ## INSTALLATION
 
 To install this module type the following:
@@ -46,7 +47,7 @@ To install this module type the following:
    make test
    make install
 
-COPYRIGHT AND LICENCE
+## COPYRIGHT AND LICENCE
 
 Copyright (C) 2017 by **Luciano Dante Cecere** <ldante1986@gmail.com>
 
