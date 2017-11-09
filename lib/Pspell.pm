@@ -95,7 +95,7 @@ sub spell_check_interactive {
             print "not found\n\n";
         }
         else {
-            print "\n";
+            print "ok\n\n";
         }
         print "word: ";
     }
