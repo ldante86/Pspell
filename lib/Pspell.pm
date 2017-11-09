@@ -84,7 +84,10 @@ sub spell_check_interactive {
     while ( chomp( my $search = <STDIN> ) ) {
         next if ( not $search );
         $search = parse_word($search);
-        next if ( not $search );
+        if ( $search eq 1 ) {
+            print "ok\n\nword: ";
+            next;
+        }
         my $found = 0;
         if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
             $found = 1;
@@ -105,7 +108,7 @@ sub spell_check {
 
     return if ( not $search );
     $search = parse_word($search);
-    return if ( not $search );
+    return if ( $search eq 1 );
 
     my $found = 0;
     if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
@@ -122,26 +125,28 @@ sub spell_check {
 }
 
 sub parse_word {
-    # There are so many spelling conventions to consider.
-
     my $word = $_[0];
 
+    # There are so many spelling conventions to consider.
+
     # Email address
-    return 0 if ( $word =~ /^[^@]+@+[^\.]+\.+[^\.]{2,6}$/ );
+    return 1 if ( $word =~ /^[^@]+@+[^\.]+\.+[^\.]{2,6}$/ );
 
     # Ignore numbers
-    return 0 if ( looks_like_number($word) );
+    if ( looks_like_number($word) ) {
+        return 1;
+    }
 
     # Ignore hyphenated words.
-    return 0 if $word =~ '\b\w+(-\w+)+\b';
+    return 1 if ( $word =~ '\b\w+(-\w+)+\b' );
 
     # For now just get rid of all punctuation
-    return 0 if $word =~ s/(?!\')[[:punct:]]//g;
+    return 1 if ( $word =~ s/(?!\')[[:punct:]]//g );
 
     # Ignore possessive plural'
-    if ( substr( $word, -1 ) eq "'") {
-    	chop($word);
-    	return 0;
+    if ( substr( $word, -1 ) eq "'" ) {
+        chop($word);
+        return 1;
     }
 
     $word;
