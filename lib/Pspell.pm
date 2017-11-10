@@ -58,6 +58,7 @@ sub load_line {
 }
 
 sub load_dictionary {
+    my $prob = 0;
     if ( -d $dict_path ) {
         chdir("$dict_path") or die "Cannot cd to $dict_path\n";
         my @files = <*>;
@@ -74,9 +75,24 @@ sub load_dictionary {
             }
         }
         if ( not @dict_list ) {
-            die "Cannot locate any dictionaries\n";
+            $prob = 1;
+            warn "Cannot locate any dictionaries in $dict_path\n";
         }
     }
+    else {
+        $prob = 1;
+        warn "$dict_path cannot be found.\n";
+    }
+
+    if ($prob) {
+        print "\nWord-list directory?: ";
+        chomp( $dict_path = <STDIN> );
+        load_dictionary();
+    }
+
+    # A word list file is one word per line. I need a routine
+    # that checks if the longest line is one word. Otherwise,
+    # we'd be accessing any readable file = bad.
 
     # For now, use the fist in the list. It is typically
     # /usr/share/dict/words. There should be a menu here
