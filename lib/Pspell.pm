@@ -93,7 +93,7 @@ sub load_dictionary {
     $dict = $dict_list[0];
 
     my @long;
-    open( DICTIONARY, "$dict" ) or die;
+    open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
     while ( my $line = <DICTIONARY> ) {
         @long = split( /\s+/, $line );
         last;
