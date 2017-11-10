@@ -35,10 +35,7 @@ sub pspell_main {
             next if ( not $line );
             @line = split( /\s+/, $line );
             for my $w (@line) {
-                if ( not $w ) {
-                    print "\n";
-                    next 2;
-                }
+                next if ( not $w );
                 spell_check( $w, $ln );
             }
 
@@ -97,6 +94,9 @@ sub load_dictionary {
     if ( $lines != $words ) {
         die "\'$dict\' doesn't seem to be a word list\n";
     }
+    close(DICTIONARY);
+
+    open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
         push @words, "$line";
