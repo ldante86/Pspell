@@ -21,7 +21,7 @@ pspell_main(@ARGV);
 
 ## OUTPUT
 
-Only on a misspelling will anything be printed to stanard output. Output is is the form of:
+Only on a misspelling will anything be printed to standard output. Output is is the form of:
 
 ```
 on line: 308 'htat' not found
