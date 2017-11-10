@@ -66,8 +66,21 @@ sub load_dictionary {
                 push @dict_list, "$file";
             }
         }
+        if (not @dict_list) {
+        	foreach my $file (@files) {
+        		if (-f $file) {
+        			push @dict_list, "$file";
+        		}
+        	}
+        }
+        if (not @dict_list) {
+        	die "Cannot locate any dictionaries\n";
+        }
     }
 
+    # For now, use the fist in the list. It is typically
+    # /usr/share/dict/words. There should be a menu here
+    # when used in interactive mode.
     $dict = $dict_list[0];
 
     open DICTIONARY, "$dict" or die;
