@@ -99,7 +99,7 @@ sub load_dictionary {
         last;
     }
     if ( scalar(@long) > 1 ) {
-        die "\'$dict\'' doesn't seem to be a word list\n";
+        die "\'$dict\' doesn't seem to be a word list\n";
     }
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
