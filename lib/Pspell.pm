@@ -21,6 +21,7 @@ our $dict;
 
 sub pspell_main {
     my $input = $_[0];
+    my @line;
 
     my $ln = 0;
     if ( not $input ) {
@@ -33,7 +34,16 @@ sub pspell_main {
             chomp($line);
             $ln++;
             next if ( not $line );
-            load_line( $line, $ln );
+            @line = split( /\s+/, $line );
+
+            for my $w (@line) {
+                if ( not $w ) {
+                    print "\n";
+                    next 2;
+                }
+                spell_check( $w, $ln );
+            }
+
         }
         print "\n\tNumber of misspellings: $misspellings\n"
             if ($misspellings);
@@ -41,19 +51,6 @@ sub pspell_main {
     else {
         load_dictionary();
         spell_check( "$input", 0 );
-    }
-}
-
-sub load_line {
-    my ( $l, $ln ) = (@_);
-    my @line = split( " ", $l );
-
-    for my $w (@line) {
-        if ( not $w ) {
-            print "\n";
-            return 0;
-        }
-        spell_check( $w, $ln );
     }
 }
 
@@ -90,16 +87,20 @@ sub load_dictionary {
         load_dictionary();
     }
 
-    # A word list file is one word per line. I need a routine
-    # that checks if the longest line is one word. Otherwise,
-    # we'd be accessing any readable file = bad.
-
     # For now, use the fist in the list. It is typically
     # /usr/share/dict/words. There should be a menu here
     # when used in interactive mode.
     $dict = $dict_list[0];
 
-    open DICTIONARY, "$dict" or die;
+    my @long;
+    open( DICTIONARY, "$dict" ) or die;
+    while ( my $line = <DICTIONARY> ) {
+        @long = split( /\s+/, $line );
+        last;
+    }
+    if ( scalar(@long) > 1 ) {
+        die "\'$dict\'' doesn't seem to be a word list\n";
+    }
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
         push @words, "$line";
@@ -187,8 +188,8 @@ Pspell - A spell checker.
 
 =head1 SYNOPSIS
 
-	use Pspell;
-	pspell_main(@ARGV);
+    use Pspell;
+    pspell_main(@ARGV);
 
 
 If the argument is a file, the file will be processed.
@@ -203,11 +204,11 @@ Only on a misspelling will anything be printed to stanard output.
 
 Output is is the form of:
 
-	on line: 308 'htat' not found
+    on line: 308 'htat' not found
 
-	...
+    ...
 
-		Number of misspellings: 5
+        Number of misspellings: 5
 
 =head1 AUTHOR
 
