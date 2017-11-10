@@ -66,15 +66,15 @@ sub load_dictionary {
                 push @dict_list, "$file";
             }
         }
-        if (not @dict_list) {
-        	foreach my $file (@files) {
-        		if (-f $file) {
-        			push @dict_list, "$file";
-        		}
-        	}
+        if ( not @dict_list ) {
+            foreach my $file (@files) {
+                if ( -f $file ) {
+                    push @dict_list, "$file";
+                }
+            }
         }
-        if (not @dict_list) {
-        	die "Cannot locate any dictionaries\n";
+        if ( not @dict_list ) {
+            die "Cannot locate any dictionaries\n";
         }
     }
 
@@ -107,12 +107,9 @@ sub spell_check_interactive {
             $found = 1;
         }
 
-        if ( not $found ) {
-            print "not found\n\n";
-        }
-        else {
-            print "ok\n\n";
-        }
+        if   ( not $found ) { print "not found\n\n" }
+        else                { print "ok\n\n" }
+
         print "word: ";
     }
 }
@@ -131,9 +128,7 @@ sub spell_check {
 
     if ( not $found ) {
         $misspellings++;
-        if ( $ln > 0 ) {
-            print "on line: $ln: ";
-        }
+        if ( $ln > 0 ) { print "on line: $ln: " }
         print "\'$search\' not found\n";
     }
 }
