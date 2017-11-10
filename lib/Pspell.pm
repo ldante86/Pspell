@@ -12,7 +12,7 @@ our @EXPORT  = qw(pspell_main);
 our $VERSION = '0.01';
 
 our $words        = ();
-our @words        = ();
+our %words        = ();
 our $misspellings = 0;
 our $dict_path    = "/usr/share/dict";
 our @dict_list    = ();
@@ -99,7 +99,7 @@ sub load_dictionary {
     open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
-        push @words, "$line";
+        $words{ lc "$line" } = 0;
     }
     close(DICTIONARY);
 }
@@ -115,7 +115,7 @@ sub spell_check_interactive {
             next;
         }
         my $found = 0;
-        if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
+        if ( exists( $words{$search} ) ) {
             $found = 1;
         }
         if   ( not $found ) { print "not found\n\n" }
@@ -132,7 +132,7 @@ sub spell_check {
     return if ( $search eq 1 );
 
     my $found = 0;
-    if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
+    if ( exists( $words{ lc $search } ) ) {
         $found = 1;
     }
     if ( not $found ) {
