@@ -11,7 +11,6 @@ our @ISA     = qw(Exporter);
 our @EXPORT  = qw(pspell_main);
 our $VERSION = '0.01';
 
-our $words        = ();
 our %words        = ();
 our $misspellings = 0;
 our $dict_path    = "/usr/share/dict";
