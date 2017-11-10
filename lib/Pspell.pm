@@ -17,6 +17,7 @@ our $misspellings = 0;
 
 our $dict_path = "/usr/share/dict";
 our @dict_list = ();
+our $dict;
 
 sub pspell_main {
     my $input = $_[0];
@@ -57,17 +58,17 @@ sub load_line {
 }
 
 sub load_dictionary {
-    if ( -e $dict_path ) {
+    if ( -d $dict_path ) {
         chdir("$dict_path") or die "Cannot cd to $dict_path\n";
         my @files = <*>;
         foreach my $file (@files) {
             if ( -l $file ) {
-                push @dict_list, $file;
+                push @dict_list, "$file";
             }
         }
     }
 
-    my $dict = $dict_list[0];
+    $dict = $dict_list[0];
 
     open DICTIONARY, "$dict" or die;
     while ( my $line = <DICTIONARY> ) {
@@ -78,7 +79,7 @@ sub load_dictionary {
 }
 
 sub spell_check_interactive {
-    print "using: $dict_path/$dict_list[0]\n\n";
+    print "using: $dict_path/$dict\n\n";
 
     print "word: ";
     while ( chomp( my $search = <STDIN> ) ) {
