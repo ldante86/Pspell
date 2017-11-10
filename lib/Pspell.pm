@@ -14,9 +14,8 @@ our $VERSION = '0.01';
 our $words        = ();
 our @words        = ();
 our $misspellings = 0;
-
-our $dict_path = "/usr/share/dict";
-our @dict_list = ();
+our $dict_path    = "/usr/share/dict";
+our @dict_list    = ();
 our $dict;
 
 sub pspell_main {
@@ -35,7 +34,6 @@ sub pspell_main {
             $ln++;
             next if ( not $line );
             @line = split( /\s+/, $line );
-
             for my $w (@line) {
                 if ( not $w ) {
                     print "\n";
@@ -87,30 +85,27 @@ sub load_dictionary {
         load_dictionary();
     }
 
-    # For now, use the fist in the list. It is typically
-    # /usr/share/dict/words. There should be a menu here
-    # when used in interactive mode.
     $dict = $dict_list[0];
 
     my @long;
+    my ( $words, $lines ) = ( 0, 0 );
     open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
     while ( my $line = <DICTIONARY> ) {
-        @long = split( /\s+/, $line );
-        last;
+        $lines++;
+        $words += scalar( split( /\s+/, $line ) );
     }
-    if ( scalar(@long) > 1 ) {
+    if ( $lines != $words ) {
         die "\'$dict\' doesn't seem to be a word list\n";
     }
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
         push @words, "$line";
     }
-    close DICTIONARY;
+    close(DICTIONARY);
 }
 
 sub spell_check_interactive {
     print "using: $dict_path/$dict\n\n";
-
     print "word: ";
     while ( chomp( my $search = <STDIN> ) ) {
         next if ( not $search );
@@ -123,10 +118,8 @@ sub spell_check_interactive {
         if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
             $found = 1;
         }
-
         if   ( not $found ) { print "not found\n\n" }
         else                { print "ok\n\n" }
-
         print "word: ";
     }
 }
@@ -142,7 +135,6 @@ sub spell_check {
     if ( my @found = grep { lc $_ eq lc "$search" } @words ) {
         $found = 1;
     }
-
     if ( not $found ) {
         $misspellings++;
         if ( $ln > 0 ) { print "on line: $ln: " }
