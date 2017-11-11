@@ -18,10 +18,8 @@ our @dict_list    = ();
 our $dict;
 
 sub pspell_main {
-    my $input = $_[0];
-    my @line;
+    my ($input, @line, $ln) = ($_[0], (), 0);
 
-    my $ln = 0;
     if ( not $input ) {
         load_dictionary();
         spell_check_interactive();
@@ -37,7 +35,6 @@ sub pspell_main {
                 next if ( not $w );
                 spell_check( $w, $ln );
             }
-
         }
         print "\n\tNumber of misspellings: $misspellings\n\n"
             if ($misspellings);
@@ -83,19 +80,23 @@ sub load_dictionary {
 
     $dict = $dict_list[0];
 
-    my @long;
-    my ( $words, $lines ) = ( 0, 0 );
-    open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
+    my ( $words, $lines, @long ) = ( 0, 0, () );
+    open( DICTIONARY, "$dict" )
+        or die "Cannot open \'$dict\' for reading: $!\n";
+
     while ( my $line = <DICTIONARY> ) {
         $lines++;
         $words += scalar( split( /\s+/, $line ) );
     }
     if ( $lines != $words ) {
-        die "\'$dict\' doesn't seem to be a word list\n";
+        close(DICTIONARY);
+        die "\'$dict\' doesn't seem to be a word list: $!\n";
     }
     close(DICTIONARY);
 
-    open( DICTIONARY, "$dict" ) or die "Cannot open \'$dict\' for reading\n";
+    open( DICTIONARY, "$dict" )
+        or die "Cannot open \'$dict\' for reading: $!\n";
+
     while ( my $line = <DICTIONARY> ) {
         chomp($line);
         $words{ lc "$line" } = 0;
