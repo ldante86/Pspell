@@ -114,7 +114,7 @@ sub spell_check_interactive {
             next;
         }
         my $found = 0;
-        if ( exists( $words{$search} ) ) {
+        if ( exists( $words{ lc $search } ) ) {
             $found = 1;
         }
         if   ( not $found ) { print "not found\n\n" }
