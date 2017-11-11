@@ -39,7 +39,7 @@ sub pspell_main {
             }
 
         }
-        print "\n\tNumber of misspellings: $misspellings\n"
+        print "\n\tNumber of misspellings: $misspellings\n\n"
             if ($misspellings);
     }
     else {
@@ -51,7 +51,7 @@ sub pspell_main {
 sub load_dictionary {
     my $prob = 0;
     if ( -d $dict_path ) {
-        chdir("$dict_path") or die "Cannot cd to $dict_path\n";
+        chdir("$dict_path") or die "Cannot cd to $dict_path: $!\n";
         my @files = <*>;
         foreach my $file (@files) {
             if ( -l $file ) {
@@ -67,12 +67,12 @@ sub load_dictionary {
         }
         if ( not @dict_list ) {
             $prob = 1;
-            warn "Cannot locate any dictionaries in $dict_path\n";
+            warn "Cannot locate any dictionaries in $dict_path: $!\n";
         }
     }
     else {
         $prob = 1;
-        warn "$dict_path cannot be found.\n";
+        warn "$dict_path cannot be found: $!\n";
     }
 
     if ($prob) {
