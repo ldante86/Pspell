@@ -33,7 +33,7 @@ If there are no arguments, the program will read from standard input.
 
 =head1 OUTPUT
 
-Only on a misspelling will anything be printed to stanard output.
+Only on a misspelling will anything be printed to standard output.
 
 Output is is the form of:
 
