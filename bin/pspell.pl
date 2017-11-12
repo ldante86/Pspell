@@ -10,6 +10,10 @@ use lib dirname( dirname abs_path $0) . '/lib';
 
 use Pspell;
 
+if ( "$ARGV[0]" eq "-h" ) {
+    die "Usage: pspell.pl [-v] [-h] [word] [file]\n";
+}
+
 pspell_main(@ARGV);
 
 __END__
