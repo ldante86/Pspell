@@ -8,6 +8,12 @@ do
 	case $1 in
 		-v) VERBOSE=1
 		;;
+		-h|--help) echo "Usage: ${0##*/} [-v -h] [word]"
+		           exit
+		;;
+		--*) # Prevent flags going to perl itself
+ 		     shift
+		;;
 		'') :
 		;;
 		*) INPUT="$1"
