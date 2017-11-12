@@ -212,7 +212,7 @@ If the first argument is B<-v>, print verbose output.
 
 If the argument is a file, the file will be processed.
 
-If the argument is not a file, is is treated as a word and spell checked.
+If the argument is not a file, it is treated as a word and spell checked.
 
 If there are no arguments, the program will read from standard input.
 
