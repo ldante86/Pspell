@@ -13,15 +13,18 @@ Linux/UNIX.
 ```
 use Pspell;
 pspell_main(@ARGV);
+
+pspell_main(-v "word");
 ```
 
+- If the first argument is **-v**, print verbose output.
 - If the argument is a file, the file will be processed.
 - If the argument is not a file, it is treated as a word and spell checked.
 - If there are no arguments, the program will read from standard input.
 
 ## OUTPUT
 
-Only on a misspelling will anything be printed to standard output. Output is is the form of:
+Verbose output is is the form of:
 
 ```
 on line: 308 'htat' not found
@@ -37,8 +40,6 @@ There is a lot still to do. So far, **Pspell** can only:
 - ignore email addresses,
 - ignore words that are all numbers,
 - ignorantly ignores punctuation.
-
-It will take a lot of regex parsing and grepping to make this a usable command-line, script tool.
 
 ## INSTALLATION
 
