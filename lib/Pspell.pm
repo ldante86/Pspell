@@ -18,11 +18,22 @@ our @dict_list    = ();
 our $dict;
 
 sub pspell_main {
-    my ($input, @line, $ln) = ($_[0], (), 0);
+    my ( $opt, $input ) = (@_);
+    my ( @line, $ln, $verbose ) = ( (), 0, 0 );
+
+    if ( $opt and "$opt" eq "-v" and ( not $input ) ) {
+        $verbose = 1;
+    }
+    elsif ( $opt and "$opt" eq "-v" and $input ) {
+        $verbose = 1;
+    }
+    elsif ( $opt and ( not $input ) ) {
+        $input = $opt;
+    }
 
     if ( not $input ) {
         load_dictionary();
-        spell_check_interactive();
+        spell_check_interactive($verbose);
     }
     elsif ( open( my $file, '<:encoding(UTF-8)', "$input" ) ) {
         load_dictionary();
@@ -33,15 +44,15 @@ sub pspell_main {
             @line = split( /\s+/, $line );
             for my $w (@line) {
                 next if ( not $w );
-                spell_check( $w, $ln );
+                spell_check( $w, $ln, $verbose );
             }
         }
         print "\n\tNumber of misspellings: $misspellings\n\n"
-            if ($misspellings);
+            if ( $misspellings and $verbose );
     }
     else {
         load_dictionary();
-        spell_check( "$input", 0 );
+        spell_check( "$input", 0, $verbose );
     }
 }
 
@@ -105,8 +116,12 @@ sub load_dictionary {
 }
 
 sub spell_check_interactive {
-    print "using: $dict_path/$dict\n\n";
-    print "word: ";
+    my $verbose = $_[0];
+    if ($verbose) {
+        print "using: $dict_path/$dict\n\n";
+        print "word: ";
+    }
+
     while ( chomp( my $search = <STDIN> ) ) {
         next if ( not $search );
         $search = parse_word($search);
@@ -120,12 +135,13 @@ sub spell_check_interactive {
         }
         if   ( not $found ) { print "not found\n\n" }
         else                { print "ok\n\n" }
-        print "word: ";
+
+        print "word: " if ($verbose);
     }
 }
 
 sub spell_check {
-    my ( $search, $ln ) = (@_);
+    my ( $search, $ln, $verbose ) = (@_);
 
     return if ( not $search );
     $search = parse_word($search);
@@ -137,8 +153,20 @@ sub spell_check {
     }
     if ( not $found ) {
         $misspellings++;
-        if ( $ln > 0 ) { print "on line: $ln: " }
-        print "\'$search\' not found\n";
+        if ( $ln > 0 and $verbose ) {
+            print "on line: $ln: ";
+        }
+        if ($verbose) {
+            print "\'$search\' not found\n";
+        }
+        else {
+            print "$search\n";
+        }
+    }
+    else {
+        if ($verbose) {
+            print "ok\n";
+        }
     }
 }
 
@@ -183,6 +211,9 @@ Pspell - A spell checker.
     use Pspell;
     pspell_main(@ARGV);
 
+    pspell_main(-v, "word");
+
+If the first argument is B<-v>, print verbose output.
 
 If the argument is a file, the file will be processed.
 
@@ -192,9 +223,7 @@ If there are no arguments, the program will read from standard input.
 
 =head1 OUTPUT
 
-Only on a misspelling will anything be printed to stanard output.
-
-Output is is the form of:
+Verbose output is is the form of:
 
     on line: 308 'htat' not found
 
