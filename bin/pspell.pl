@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use 5.010;
 
-if ( "$ARGV[0]" eq "-h" ) {
+if ( @ARGV and "$ARGV[0]" eq "-h" ) {
     die "Usage: pspell.pl [-v] [-h] [word] [file]\n";
 }
 
