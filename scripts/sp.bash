@@ -1,5 +1,11 @@
 #!/bin/bash -
 
+# Usage:
+#  sp.sh [enter] <stdin>
+#  sp.sh [-v] file [> file.spell]
+#  sp.sh [-v] word
+#  sp.sh [-h]
+
 VERBOSE=0
 INPUT=
 
@@ -8,7 +14,7 @@ do
 	case $1 in
 		-v) VERBOSE=1
 		;;
-		-h|--help) echo "Usage: ${0##*/} [-v -h] [word]"
+		-h|--help) echo "Usage: ${0##*/} [-v -h] [word] [file]"
 		           exit
 		;;
 		--*) # Prevent flags going to perl itself
