@@ -163,11 +163,6 @@ sub spell_check {
             print "$search\n";
         }
     }
-    else {
-        if ($verbose) {
-            print "ok\n";
-        }
-    }
 }
 
 sub parse_word {
