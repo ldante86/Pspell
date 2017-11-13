@@ -118,6 +118,7 @@ sub load_dictionary {
 sub spell_check_interactive {
     my $verbose = $_[0];
     if ($verbose) {
+        print "Pspell - version $VERSION\n";
         print "using: $dict_path/$dict\n\n";
         print "word: ";
     }
