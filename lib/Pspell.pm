@@ -179,14 +179,15 @@ sub parse_word {
     # Ignore hyphenated words.
     return 1 if ( $word =~ '\b\w+(-\w+)+\b' );
 
-    # For now just get rid of all punctuation
-    return 1 if ( $word =~ s/[[:punct:]]//g );
-
     # Ignore possessive plural'
     if ( substr( $word, -1 ) eq "'" ) {
         chop($word);
         return 1;
     }
+
+    # For now just get rid of all punctuation
+    #return 1 if ($word =~ s/[[:punct:]]//g);
+    $word =~ s/[[:punct:]]//g;
 
     $word;
 }
