@@ -17,7 +17,7 @@ do
 		-h|--help) echo "Usage: ${0##*/} [-v -h] [word] [file]"
 		           exit
 		;;
-		--*) # Prevent flags going to perl itself
+		-*|--*) # Prevent flags going to perl itself
  		     shift
 		;;
 		'') :
