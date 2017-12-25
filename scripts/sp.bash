@@ -28,8 +28,8 @@ do
 done
 
 case $VERBOSE in
-	1) perl -MPspell -e 'Pspell::pspell_main(-v, @ARGV)' "$INPUT"
+	1) exec perl -MPspell -e 'Pspell::pspell_main(-v, @ARGV)' "$INPUT"
 	;;
-	0) perl -MPspell -e 'Pspell::pspell_main(@ARGV)' "$INPUT"
+	0) exec perl -MPspell -e 'Pspell::pspell_main(@ARGV)' "$INPUT"
 	;;
 esac
